@@ -1,36 +1,30 @@
-name: Publish
+name: Publish (next)
 
 on:
   push:
-    tags:
-      - '*'
-    branches-ignore:
+    branches:
       - next
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-18.04
     timeout-minutes: 10
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
-          node-version: '20.x'
-          always-auth: true
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@reedsy"
+          node-version: '16.x'
+          registry-url: 'https://npm.pkg.github.com'
       - name: Install
         # Skip post-install to avoid malicious scripts stealing PAT
         run: npm install --ignore-script
         env:
           # GITHUB_TOKEN can't access packages hosted in private repos,
           # even within the same organisation
-          NODE_AUTH_TOKEN: ${{ secrets.REEDSY_BOT_PERSONAL_ACCESS_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: Post-install
         run: npm rebuild && npm run prepare --if-present
       - name: Publish
-        run: npm publish
+        run: npm publish --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
