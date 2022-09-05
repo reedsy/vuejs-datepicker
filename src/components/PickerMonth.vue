@@ -105,6 +105,13 @@ export default {
       default: false,
     },
   },
+  emits: [
+    'changedYear',
+    'keydown',
+    'selectMonth',
+    'showYearCalendar',
+    'update:focusedDate',
+  ],
   data () {
     const constructedDateUtils = makeDateUtils(this.useUtc);
     return {
@@ -197,6 +204,7 @@ export default {
     /**
      * Emits a selectMonth event
      * @param {Object} month
+     * @return {Boolean}
      */
     selectMonth (month) {
       if (month.isDisabled) {
@@ -261,7 +269,7 @@ export default {
     },
     /**
      * Whether the selected date is in this month
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isSelectedMonth (date) {
@@ -271,7 +279,7 @@ export default {
     },
     /**
      * Whether the focused date is in this month
-     * @param date {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isFocusedMonth (date) {
@@ -282,7 +290,7 @@ export default {
     },
     /**
      * Whether a month is disabled
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isDisabledMonth (date) {

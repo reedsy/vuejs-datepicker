@@ -1,6 +1,6 @@
 {
   "extends": [
-    "plugin:vue/recommended"
+    "plugin:vue/vue3-recommended"
   ],
   // 2: reports an error, breaking the build.
   // 1: report a warning.
@@ -43,26 +43,21 @@
       2,
       "always"
     ],
+    "semi": 2,
+    "strict": 0,
+    "valid-jsdoc": 0,
+    "valid-typeof": 2,
+    "vue/require-default-prop": 0,
+    "wrap-iife": [
+      2,
+      "inside"
+    ],
     "quotes": [
       2,
       "single",
       {
         "allowTemplateLiterals": true
       }
-    ],
-    "semi": 2,
-    "strict": 0,
-    "valid-jsdoc": [
-      // TODO: CHANGE TO 2
-      1,
-      {
-        "requireReturn": false
-      }
-    ],
-    "valid-typeof": 2,
-    "wrap-iife": [
-      2,
-      "inside"
     ]
   },
   "globals": {

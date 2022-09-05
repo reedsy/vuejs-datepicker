@@ -36,6 +36,7 @@ export default {
     todayButtonClass: [ String, Object, Array ],
     clearButtonClass: [ String, Object, Array ],
   },
+  emits: [ 'keydown' ],
 };
 </script>
 
