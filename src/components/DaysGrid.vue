@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div
     role="grid"
@@ -14,25 +15,25 @@
         :key="d.timestamp"
         class="cell day blank"
       />
-    </template><!--
-      --><span
-            v-for="day in days"
-            :key="day.timestamp"
-            class="cell day"
-            :class="dayClasses(day)"
-            :tabindex="isFocused(day) ? 0 : -1"
-            :aria-selected="day.isSelected"
-            @mouseover="mouseOver(day)"
-            @focus="mouseOver(day)"
-            @keydown.left.prevent="$emit('focus-previous-day')"
-            @keydown.right.prevent="$emit('focus-next-day')"
-            @keydown.up.prevent="$emit('focus-previous-week')"
-            @keydown.down.prevent="$emit('focus-next-week')"
-            @keydown.space.enter.prevent="selectDate(day)"
-            @keydown="$emit('keydown', $event)"
-            @click="selectDate(day)"
-            v-html="dayCellContent(day)"
-          />
+    </template>
+    <span
+      v-for="day in days"
+      :key="day.timestamp"
+      class="cell day"
+      :class="dayClasses(day)"
+      :tabindex="isFocused(day) ? 0 : -1"
+      :aria-selected="day.isSelected"
+      @mouseover="mouseOver(day)"
+      @focus="mouseOver(day)"
+      @keydown.left.prevent="$emit('focus-previous-day')"
+      @keydown.right.prevent="$emit('focus-next-day')"
+      @keydown.up.prevent="$emit('focus-previous-week')"
+      @keydown.down.prevent="$emit('focus-next-week')"
+      @keydown.space.enter.prevent="selectDate(day)"
+      @keydown="$emit('keydown', $event)"
+      @click="selectDate(day)"
+      v-html="dayCellContent(day)"
+    />
   </div>
 </template>
 
@@ -54,6 +55,15 @@ export default {
     useUtc: Boolean,
     utils: Object,
   },
+  emits: [
+    'focus-next-day',
+    'focus-next-week',
+    'focus-previous-day',
+    'focus-previous-week',
+    'keydown',
+    'mouseover',
+    'select',
+  ],
   computed: {
     /**
      * Returns an array of day names

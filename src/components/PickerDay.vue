@@ -106,17 +106,18 @@
     </div>
     <div>
       <slot name="afterCalendarContent" />
-      <slot name="footer" />
-      <PickerFooter
-        v-if="showFooter && !$slots.footer"
-        :selected-date="selectedDate"
-        :clear-date="clearDate"
-        :set-today="setToday"
-        :footer-class="footerClass"
-        :today-button-class="todayButtonClass"
-        :clear-button-class="clearButtonClass"
-        @keydown="$emit('keydown', $event)"
-      />
+      <slot name="footer">
+        <PickerFooter
+          v-if="showFooter"
+          :selected-date="selectedDate"
+          :clear-date="clearDate"
+          :set-today="setToday"
+          :footer-class="footerClass"
+          :today-button-class="todayButtonClass"
+          :clear-button-class="clearButtonClass"
+          @keydown="$emit('keydown', $event)"
+        />
+      </slot>
     </div>
   </div>
 </template>
@@ -168,6 +169,14 @@ export default {
       default: false,
     },
   },
+  emits: [
+    'changedMonth',
+    'keydown',
+    'selectDate',
+    'selectedDisabled',
+    'showMonthCalendar',
+    'update:focusedDate',
+  ],
   data () {
     const constructedDateUtils = makeDateUtils(this.useUtc);
     return {
@@ -431,7 +440,7 @@ export default {
     },
     /**
      * Whether a day is selected
-     * @param {Date}
+     * @param {Date} dObj
      * @return {Boolean}
      */
     isSelectedDate (dObj) {
@@ -439,7 +448,7 @@ export default {
     },
     /**
      * Whether a day is disabled
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isDisabledDate (date) {
@@ -486,7 +495,7 @@ export default {
     },
     /**
      * Whether a day is highlighted (only if it is not disabled already except when highlighted.includeDisabled is true)
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isHighlightedDate (date) {
@@ -530,7 +539,7 @@ export default {
     /**
      * Whether a day is highlighted and it is the first date
      * in the highlighted range of dates
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isHighlightStart (date) {
@@ -543,7 +552,7 @@ export default {
     /**
      * Whether a day is highlighted and it is the first date
      * in the highlighted range of dates
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isHighlightEnd (date) {

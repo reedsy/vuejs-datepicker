@@ -28,9 +28,9 @@
       :use-utc="useUtc"
       :is-open="isOpen"
       :active-grid-id="activeGridId"
-      @showCalendar="showCalendar"
-      @typedDate="setTypedDate"
-      @clearDate="clearDate"
+      @show-calendar="showCalendar"
+      @typed-date="setTypedDate"
+      @clear-date="clearDate"
     >
       <template #afterDateInput>
         <slot name="afterDateInput" />
@@ -47,6 +47,7 @@
     <!-- Day View -->
     <picker-day
       v-if="allowedToShowView('day')"
+      v-model:focused-date="focusedDate"
       :page-date="pageDate"
       :selected-date="selectedDate"
       :show-day-view="showDayView"
@@ -60,7 +61,6 @@
       :calendar-style="calendarStyle"
       :translation="translation"
       :page-timestamp="pageTimestamp"
-      :focused-date.sync="focusedDate"
       :is-rtl="isRtl"
       :monday-first="mondayFirst"
       :modal="modal"
@@ -74,26 +74,23 @@
       :is-initialized="isInitialized"
       :highlight-date="highlightDate"
       :inline="inline"
-      @changedMonth="handleChangedMonthFromDayPicker"
-      @selectDate="selectDate"
-      @showMonthCalendar="showMonthCalendar"
-      @selectedDisabled="selectDisabledDate"
+      @changed-month="handleChangedMonthFromDayPicker"
+      @select-date="selectDate"
+      @show-month-calendar="showMonthCalendar"
+      @selected-disabled="selectDisabledDate"
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
       <template #beforeCalendarHeader>
-        <slot
-          name="beforeCalendarHeader"
-        />
+        <slot name="beforeCalendarHeader" />
       </template>
       <template #afterCalendarContent>
-        <slot
-          name="afterCalendarContent"
-        />
+        <slot name="afterCalendarContent" />
       </template>
       <template #footer>
-        <slot name="footer"
-              :on-tab="(event) => focusNextElement(event)"
+        <slot
+          name="footer"
+          :on-tab="(event) => focusNextElement(event)"
         />
       </template>
     </picker-day>
@@ -101,9 +98,9 @@
     <!-- Month View -->
     <picker-month
       v-if="allowedToShowView('month')"
+      v-model:focused-date="focusedDate"
       :class="{'vdp-datepicker__calendar--side-by-side': sideBySide}"
       :page-date="pageDate"
-      :focused-date.sync="focusedDate"
       :selected-date="selectedDate"
       :show-month-view="showMonthView"
       :allowed-to-show-view="allowedToShowView"
@@ -116,9 +113,9 @@
       :use-utc="useUtc"
       :is-initialized="isInitialized"
       :inline="inline"
-      @selectMonth="selectMonth"
-      @showYearCalendar="showYearCalendar"
-      @changedYear="setPageDate"
+      @select-month="selectMonth"
+      @show-year-calendar="showYearCalendar"
+      @changed-year="setPageDate"
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
@@ -133,9 +130,9 @@
     <!-- Year View -->
     <picker-year
       v-if="allowedToShowView('year')"
+      v-model:focused-date="focusedDate"
       :class="{'vdp-datepicker__calendar--side-by-side': sideBySide}"
       :page-date="pageDate"
-      :focused-date.sync="focusedDate"
       :selected-date="selectedDate"
       :show-year-view="showYearView"
       :allowed-to-show-view="allowedToShowView"
@@ -148,8 +145,8 @@
       :use-utc="useUtc"
       :is-initialized="isInitialized"
       :inline="inline"
-      @selectYear="selectYear"
-      @changedDecade="setPageDate"
+      @select-year="selectYear"
+      @changed-decade="setPageDate"
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
@@ -215,6 +212,9 @@ export default {
       default: 'day',
     },
     modal: Boolean,
+    modelValue: {
+      validator: val => utils.validateDateInput(val),
+    },
     mondayFirst: Boolean,
     name: String,
     openDate: {
@@ -227,15 +227,22 @@ export default {
     todayButtonClass: [ String, Object, Array ],
     typeable: Boolean,
     useUtc: Boolean,
-    value: {
-      validator: val => utils.validateDateInput(val),
-    },
     wrapperClass: [ String, Object, Array ],
     sideBySide: {
       type: Boolean,
       default: false,
     },
   },
+  emits: [
+    'changedMonth',
+    'changedYear',
+    'cleared',  
+    'closed',
+    'highlight-date',
+    'selected',
+    'selectedDisabled',
+    'update:modelValue',
+  ],
   data () {
     const startDate = this.openDate ? new Date(this.openDate) : new Date();
     const focusedDate = startDate.getTime();
@@ -308,7 +315,7 @@ export default {
     },
   },
   watch: {
-    value (value) {
+    modelValue (value) {
       this.setValue(value);
     },
     openDate () {
@@ -459,7 +466,7 @@ export default {
       }
       this.selectedDate = date;
       this.$emit('selected', date);
-      this.$emit('input', date);
+      this.$emit('update:modelValue', date);
     },
     shouldChangePage (date) {
       const isSameMonthThanCurrentPage = this.utils.getMonth(this.pageDate) === this.utils.getMonth(date);
@@ -481,7 +488,7 @@ export default {
       this.selectedDate = null;
       this.setPageDate();
       this.$emit('selected', null);
-      this.$emit('input', null);
+      this.$emit('update:modelValue', null);
       this.$emit('cleared');
     },
     /**
@@ -548,6 +555,7 @@ export default {
     },
     /**
      * Sets the date that the calendar should open on
+     * @param {Date|String|Number|null} date
      */
     setPageDate (date) {
       if (!date) {
@@ -561,6 +569,7 @@ export default {
     },
     /**
      * Handles a month change from the day picker
+     * @param {Date|String|Number|null} date
      */
     handleChangedMonthFromDayPicker (date) {
       this.setPageDate(date);
@@ -568,6 +577,7 @@ export default {
     },
     /**
      * Set the date from a typedDate event
+     * @param {Date|String|Number|null} date
      */
     setTypedDate (date) {
       this.setDate(date.getTime());
@@ -596,8 +606,8 @@ export default {
      * Initiate the component
      */
     async init () {
-      if (this.value) {
-        this.setValue(this.value);
+      if (this.modelValue) {
+        this.setValue(this.modelValue);
       }
       if (this.isInline) {
         this.setInitialView();
