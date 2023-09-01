@@ -244,18 +244,20 @@ export default {
      * @return {Boolean}
      */
     isLeftNavDisabled () {
-      return this.isRtl
+      const disabled = this.isRtl
         ? this.isNextMonthDisabled()
         : this.isPreviousMonthDisabled();
+      return disabled || null;
     },
     /**
      * Is the right hand navigation button disabled?
      * @return {Boolean}
      */
     isRightNavDisabled () {
-      return this.isRtl
+      const disabled = this.isRtl
         ? this.isPreviousMonthDisabled()
         : this.isNextMonthDisabled();
+      return disabled || null;
     },
   },
   watch: {

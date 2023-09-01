@@ -152,18 +152,20 @@ export default {
      * @return {Boolean}
      */
     isLeftNavDisabled () {
-      return this.isRtl
+      const disabled = this.isRtl
         ? this.isNextYearDisabled(this.pageTimestamp)
         : this.isPreviousYearDisabled(this.pageTimestamp);
+      return disabled || null;
     },
     /**
      * Is the right hand navigation disabled
      * @return {Boolean}
      */
     isRightNavDisabled () {
-      return this.isRtl
+      const disabled = this.isRtl
         ? this.isPreviousYearDisabled(this.pageTimestamp)
         : this.isNextYearDisabled(this.pageTimestamp);
+      return disabled || null;
     },
   },
   watch: {

@@ -22,7 +22,7 @@
       :calendar-button="calendarButton"
       :calendar-button-icon="calendarButtonIcon"
       :calendar-button-icon-content="calendarButtonIconContent"
-      :disabled="disabled"
+      :disabled="disabled || null"
       :required="required"
       :bootstrap-styling="bootstrapStyling"
       :use-utc="useUtc"
@@ -234,7 +234,7 @@ export default {
   emits: [
     'changedMonth',
     'changedYear',
-    'cleared',  
+    'cleared',
     'closed',
     'highlight-date',
     'selected',
