@@ -418,7 +418,7 @@ describe('Modal', () => {
     await wrapper.vm.$nextTick();
 
     expect(wrapper.emitted().closed).toBeTruthy();
-    wrapper.destroy();
+    wrapper.unmount();
   });
 });
 
