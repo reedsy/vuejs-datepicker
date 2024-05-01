@@ -106,17 +106,18 @@
     </div>
     <div>
       <slot name="afterCalendarContent" />
-      <slot name="footer" />
-      <PickerFooter
-        v-if="showFooter && !$slots.footer"
-        :selected-date="selectedDate"
-        :clear-date="clearDate"
-        :set-today="setToday"
-        :footer-class="footerClass"
-        :today-button-class="todayButtonClass"
-        :clear-button-class="clearButtonClass"
-        @keydown="$emit('keydown', $event)"
-      />
+      <slot name="footer">
+        <PickerFooter
+          v-if="showFooter"
+          :selected-date="selectedDate"
+          :clear-date="clearDate"
+          :set-today="setToday"
+          :footer-class="footerClass"
+          :today-button-class="todayButtonClass"
+          :clear-button-class="clearButtonClass"
+          @keydown="$emit('keydown', $event)"
+        />
+      </slot>
     </div>
   </div>
 </template>
@@ -168,6 +169,14 @@ export default {
       default: false,
     },
   },
+  emits: [
+    'changedMonth',
+    'keydown',
+    'selectDate',
+    'selectedDisabled',
+    'showMonthCalendar',
+    'update:focusedDate',
+  ],
   data () {
     const constructedDateUtils = makeDateUtils(this.useUtc);
     return {
@@ -300,12 +309,12 @@ export default {
       };
     },
     getMonthDays (date) {
-      let days = [];
+      const days = [];
       // set up a new date object to the beginning of the current 'page'
-      let dObj = this.useUtc
+      const dObj = this.useUtc
         ? new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1))
         : new Date(date.getFullYear(), date.getMonth(), 1, date.getHours(), date.getMinutes());
-      let daysInMonth = this.utils.daysInMonth(this.utils.getFullYear(dObj), this.utils.getMonth(dObj));
+      const daysInMonth = this.utils.daysInMonth(this.utils.getFullYear(dObj), this.utils.getMonth(dObj));
       for (let i = 0; i < daysInMonth; i++) {
         days.push(this.getDateObject(dObj));
         this.utils.setDate(dObj, this.utils.getDate(dObj) + 1);
@@ -342,7 +351,7 @@ export default {
     setToday () {
       const d = new Date();
 
-      let dObj = this.useUtc
+      const dObj = this.useUtc
         ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()))
         : new Date(d.getFullYear(), d.getMonth(), d.getUTCDate(), d.getHours(), d.getMinutes());
 
@@ -372,7 +381,7 @@ export default {
      * @param {Number} incrementBy
      */
     changeMonth (incrementBy) {
-      let date = this.pageDate;
+      const date = this.pageDate;
       this.utils.setMonth(date, this.utils.getMonth(date) + incrementBy);
       this.$emit('changedMonth', date);
     },
@@ -394,7 +403,7 @@ export default {
       if (!this.disabledDates || !this.disabledDates.to) {
         return false;
       }
-      let d = this.pageDate;
+      const d = this.pageDate;
       return this.utils.getMonth(this.disabledDates.to) >= this.utils.getMonth(d) &&
         this.utils.getFullYear(this.disabledDates.to) >= this.utils.getFullYear(d);
     },
@@ -425,13 +434,13 @@ export default {
       if (!this.disabledDates || !this.disabledDates.from) {
         return false;
       }
-      let d = this.pageDate;
+      const d = this.pageDate;
       return this.utils.getMonth(this.disabledDates.from) <= this.utils.getMonth(d) &&
         this.utils.getFullYear(this.disabledDates.from) <= this.utils.getFullYear(d);
     },
     /**
      * Whether a day is selected
-     * @param {Date}
+     * @param {Date} dObj
      * @return {Boolean}
      */
     isSelectedDate (dObj) {
@@ -439,7 +448,7 @@ export default {
     },
     /**
      * Whether a day is disabled
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isDisabledDate (date) {
@@ -486,7 +495,7 @@ export default {
     },
     /**
      * Whether a day is highlighted (only if it is not disabled already except when highlighted.includeDisabled is true)
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isHighlightedDate (date) {
@@ -530,7 +539,7 @@ export default {
     /**
      * Whether a day is highlighted and it is the first date
      * in the highlighted range of dates
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isHighlightStart (date) {
@@ -543,7 +552,7 @@ export default {
     /**
      * Whether a day is highlighted and it is the first date
      * in the highlighted range of dates
-     * @param {Date}
+     * @param {Date} date
      * @return {Boolean}
      */
     isHighlightEnd (date) {

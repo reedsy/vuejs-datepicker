@@ -26,8 +26,8 @@ describe('PickerDay: DOM', () => {
     expect(wrapper.vm.isSelectedDate(new Date(2017, 1, 1))).toEqual(false);
   });
 
-  it('emits an event when selected', () => {
-    wrapper.vm.selectDate({ isDisabled: false });
+  it('emits an event when selected', async () => {
+    await wrapper.vm.selectDate({ isDisabled: false });
     expect(wrapper.emitted().selectDate).toBeTruthy();
   });
 
@@ -36,7 +36,7 @@ describe('PickerDay: DOM', () => {
       highlightDate: jest.fn(),
     });
     const daysGrids = wrapper.findAllComponents(DaysGrid);
-    const daysGrid = daysGrids.wrappers[0];
+    const daysGrid = daysGrids[0];
     expect(daysGrid.exists()).toBe(true);
     const dateObj = wrapper.vm.getDateObject(new Date(2016, 12, 5));
     daysGrid.vm.$emit('mouseover', dateObj);
@@ -52,7 +52,7 @@ describe('PickerDay: DOM', () => {
       },
     });
     const daysGrids = wrapper.findAllComponents(DaysGrid);
-    const daysGrid = daysGrids.wrappers[0];
+    const daysGrid = daysGrids[0];
     expect(daysGrid.exists()).toBe(true);
     const dateObj = wrapper.vm.getDateObject(date);
     daysGrid.vm.$emit('mouseover', dateObj);
@@ -65,7 +65,7 @@ describe('PickerDay: DOM', () => {
       sideBySide: true,
     });
     const daysGrids = wrapper.findAllComponents(DaysGrid);
-    const daysGrid = daysGrids.wrappers[1];
+    const daysGrid = daysGrids[1];
     expect(daysGrid.exists()).toBe(true);
     const dateObj = wrapper.vm.getDateObject(new Date(2016, 12, 5));
     daysGrid.vm.$emit('mouseover', dateObj);
@@ -108,8 +108,8 @@ describe('PickerDay: DOM', () => {
     expect(footer.exists()).toBe(false);
   });
 
-  it('displays a custom footer from a slot and hides the default footer', () => {
-    wrapper = shallowMount(PickerDay, {
+  it('displays a custom footer from a slot and hides the default footer', async () => {
+    wrapper = mount(PickerDay, {
       propsData: {
         allowedToShowView: () => true,
         translation: en,

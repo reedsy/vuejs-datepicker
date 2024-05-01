@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div
     role="grid"
@@ -14,25 +15,25 @@
         :key="d.timestamp"
         class="cell day blank"
       />
-    </template><!--
-      --><span
-            v-for="day in days"
-            :key="day.timestamp"
-            class="cell day"
-            :class="dayClasses(day)"
-            :tabindex="isFocused(day) ? 0 : -1"
-            :aria-selected="day.isSelected"
-            @mouseover="mouseOver(day)"
-            @focus="mouseOver(day)"
-            @keydown.left.prevent="$emit('focus-previous-day')"
-            @keydown.right.prevent="$emit('focus-next-day')"
-            @keydown.up.prevent="$emit('focus-previous-week')"
-            @keydown.down.prevent="$emit('focus-next-week')"
-            @keydown.space.enter.prevent="selectDate(day)"
-            @keydown="$emit('keydown', $event)"
-            @click="selectDate(day)"
-            v-html="dayCellContent(day)"
-          />
+    </template>
+    <span
+      v-for="day in days"
+      :key="day.timestamp"
+      class="cell day"
+      :class="dayClasses(day)"
+      :tabindex="isFocused(day) ? 0 : -1"
+      :aria-selected="day.isSelected"
+      @mouseover="mouseOver(day)"
+      @focus="mouseOver(day)"
+      @keydown.left.prevent="$emit('focus-previous-day')"
+      @keydown.right.prevent="$emit('focus-next-day')"
+      @keydown.up.prevent="$emit('focus-previous-week')"
+      @keydown.down.prevent="$emit('focus-next-week')"
+      @keydown.space.enter.prevent="selectDate(day)"
+      @keydown="$emit('keydown', $event)"
+      @click="selectDate(day)"
+      v-html="dayCellContent(day)"
+    />
   </div>
 </template>
 
@@ -54,6 +55,15 @@ export default {
     useUtc: Boolean,
     utils: Object,
   },
+  emits: [
+    'focus-next-day',
+    'focus-next-week',
+    'focus-previous-day',
+    'focus-previous-week',
+    'keydown',
+    'mouseover',
+    'select',
+  ],
   computed: {
     /**
      * Returns an array of day names
@@ -74,7 +84,7 @@ export default {
      */
     blankDays () {
       const d = this.startDate;
-      let dObj = this.useUtc
+      const dObj = this.useUtc
         ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
         : new Date(d.getFullYear(), d.getMonth(), 1, d.getHours(), d.getMinutes());
       if (this.mondayFirst) {
@@ -86,13 +96,13 @@ export default {
   methods: {
     dayClasses (day) {
       return {
-        'selected': day.isSelected,
-        'disabled': day.isDisabled,
-        'highlighted': day.isHighlighted,
-        'today': day.isToday,
-        'weekend': day.isWeekend,
-        'sat': day.isSaturday,
-        'sun': day.isSunday,
+        selected: day.isSelected,
+        disabled: day.isDisabled,
+        highlighted: day.isHighlighted,
+        today: day.isToday,
+        weekend: day.isWeekend,
+        sat: day.isSaturday,
+        sun: day.isSunday,
         'highlight-start': day.isHighlightStart,
         'highlight-end': day.isHighlightEnd,
       };

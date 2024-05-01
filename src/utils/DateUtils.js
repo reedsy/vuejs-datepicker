@@ -118,7 +118,7 @@ const utils = {
    */
   getDayNameAbbr (date, days) {
     if (typeof date !== 'object') {
-      throw TypeError('Invalid Type');
+      throw new TypeError('Invalid Type');
     }
     return days[this.getDay(date)];
   },
@@ -139,7 +139,7 @@ const utils = {
     if (typeof month === 'number') {
       return months[month];
     }
-    throw TypeError('Invalid type');
+    throw new TypeError('Invalid type');
   },
 
   /**
@@ -157,7 +157,7 @@ const utils = {
     if (typeof month === 'number') {
       return monthsAbbr[month];
     }
-    throw TypeError('Invalid type');
+    throw new TypeError('Invalid type');
   },
 
   /**

@@ -12,12 +12,15 @@ module.exports = {
   },
   transform: {
     '^.+\\.js$': 'babel-jest',
-    '.*\\.(vue)$': 'vue-jest',
+    '^.+\\.vue$': '@vue/vue3-jest',
   },
-  setupFiles: [ '<rootDir>/test/unit/setup' ],
   coverageDirectory: '<rootDir>/test/unit/coverage',
   collectCoverageFrom: [
     'src/**/*.{js,vue}',
     '!src/locale/translations/**/*.js',
   ],
+  testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    customExportConditions: [ 'node', 'node-addons' ],
+  },
 };
