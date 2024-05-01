@@ -19,7 +19,7 @@
       <button
         type="button"
         class="prev"
-        :disabled="isLeftNavDisabled"
+        :disabled="isLeftNavDisabled || null"
         :aria-label="isRtl ? 'Next Year' : 'Previous Year'"
         @click="isRtl ? nextYear() : previousYear()"
         @keydown.space.enter.prevent="isRtl ? nextYear() : previousYear()"
@@ -43,7 +43,7 @@
         type="button"
         class="next"
         :aria-label="isRtl ? 'Previous Year' : 'Next Year'"
-        :disabled="isRightNavDisabled"
+        :disabled="isRightNavDisabled || null"
         @click="isRtl ? previousYear() : nextYear()"
         @keydown.space.enter.prevent="isRtl ? previousYear() : nextYear()"
         @keydown="$emit('keydown', $event)"

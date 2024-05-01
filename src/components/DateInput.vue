@@ -26,7 +26,7 @@
       :open-date="openDate"
       :placeholder="placeholder"
       :clear-button="clearButton"
-      :disabled="disabled"
+      :disabled="disabled || null"
       :required="required"
       :readonly="!typeable"
       autocomplete="off"
@@ -91,10 +91,10 @@ export default {
     bootstrapStyling: Boolean,
     useUtc: Boolean,
   },
-  emits: [ 
-    'showCalendar', 
-    'typedDate', 
-    'clearDate', 
+  emits: [
+    'showCalendar',
+    'typedDate',
+    'clearDate',
   ],
   data () {
     const constructedDateUtils = makeDateUtils(this.useUtc);
