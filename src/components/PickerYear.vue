@@ -46,17 +46,17 @@
       </button>
     </header>
     <div
-      role="grid"
       aria-labelledby="decade-button"
     >
       <button
         v-for="year in years"
         :key="year.timestamp"
-        type="button"
-        class="cell year"
-        :tabindex="year.isFocused ? 0 : -1"
-        :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
         :aria-selected="year.isSelected"
+        class="cell year"
+        :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
+        role="button"
+        :tabindex="year.isFocused ? 0 : -1"
+        type="button"
         @click.stop="selectYear(year)"
         @keydown.right.prevent="focusNextYear"
         @keydown.left.prevent="focusPreviousYear"

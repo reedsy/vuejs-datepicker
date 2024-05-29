@@ -52,17 +52,17 @@
       </button>
     </header>
     <div
-      role="grid"
       aria-labelledby="year-button"
     >
       <button
         v-for="month in months"
         :key="month.timestamp"
-        type="button"
-        class="cell month"
-        :tabindex="month.isFocused ? 0 : -1"
-        :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
         :aria-selected="month.isSelected"
+        :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
+        class="cell month"
+        role="button"
+        :tabindex="month.isFocused ? 0 : -1"
+        type="button"
         @keydown.right.prevent="focusNextMonth"
         @keydown.left.prevent="focusPreviousMonth"
         @keydown.down.prevent="focusNextQuarter"

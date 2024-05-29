@@ -1,7 +1,6 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div
-    role="grid"
     aria-labelledby="month-button"
   >
     <span
@@ -19,10 +18,11 @@
     <span
       v-for="day in days"
       :key="day.timestamp"
+      :aria-selected="day.isSelected"
       class="cell day"
       :class="dayClasses(day)"
+      role="button"
       :tabindex="isFocused(day) ? 0 : -1"
-      :aria-selected="day.isSelected"
       @mouseover="mouseOver(day)"
       @focus="mouseOver(day)"
       @keydown.left.prevent="$emit('focus-previous-day')"
