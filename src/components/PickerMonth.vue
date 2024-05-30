@@ -62,7 +62,7 @@
         :aria-selected="month.isSelected"
         :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
         class="cell month"
-        role="button"
+        :role="month.isDisabled ? null : 'button'"
         :tabindex="month.isFocused ? 0 : -1"
         type="button"
         @keydown.right.prevent="focusNextMonth"

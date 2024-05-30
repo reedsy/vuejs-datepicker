@@ -56,7 +56,7 @@
         :aria-selected="year.isSelected"
         class="cell year"
         :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
-        role="button"
+        :role="year.isDisabled ? null : 'button'"
         :tabindex="year.isFocused ? 0 : -1"
         type="button"
         @click.stop="selectYear(year)"

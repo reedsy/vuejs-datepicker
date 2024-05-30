@@ -21,7 +21,7 @@
       :aria-selected="day.isSelected"
       class="cell day"
       :class="dayClasses(day)"
-      role="button"
+      :role="day.isDisabled ? null : 'button'"
       :tabindex="isFocused(day) ? 0 : -1"
       @mouseover="mouseOver(day)"
       @focus="mouseOver(day)"
