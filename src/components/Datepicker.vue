@@ -236,7 +236,7 @@ export default {
   emits: [
     'changedMonth',
     'changedYear',
-    'cleared',  
+    'cleared',
     'closed',
     'highlight-date',
     'selected',

@@ -20,6 +20,7 @@
         type="button"
         class="prev"
         :disabled="isLeftNavDisabled || null"
+        :aria-disabled="isLeftNavDisabled || null"
         :aria-label="isRtl ? 'Next Decade' : 'Previous Decade'"
         @click="isRtl ? nextDecade() : previousDecade()"
         @keydown.space.enter.prevent="isRtl ? nextDecade() : previousDecade()"
@@ -39,6 +40,7 @@
         class="next"
         :aria-label="isRtl ? 'Previous Decade' : 'Next Decade'"
         :disabled="isRightNavDisabled || null"
+        :aria-disabled="isRightNavDisabled || null"
         @click="isRtl ? previousDecade() : nextDecade()"
         @keydown="$emit('keydown', $event)"
       >
@@ -46,17 +48,17 @@
       </button>
     </header>
     <div
-      role="grid"
       aria-labelledby="decade-button"
     >
       <button
         v-for="year in years"
         :key="year.timestamp"
-        type="button"
-        class="cell year"
-        :tabindex="year.isFocused ? 0 : -1"
-        :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
         :aria-selected="year.isSelected"
+        class="cell year"
+        :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
+        role="button"
+        :tabindex="year.isFocused ? 0 : -1"
+        type="button"
         @click.stop="selectYear(year)"
         @keydown.right.prevent="focusNextYear"
         @keydown.left.prevent="focusPreviousYear"

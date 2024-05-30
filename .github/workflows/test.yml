@@ -11,7 +11,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    if: ${{ github.actor != 'dependabot[bot]' }}
+
     timeout-minutes: 10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,6 +36,6 @@ jobs:
         run: npm rebuild && npm run prepare --if-present
       - name: Test
         run: npm test
-      - name: Tag
+      - name: Release
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: ./scripts/tag.sh
+        run: ./scripts/release.sh
