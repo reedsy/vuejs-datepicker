@@ -27,6 +27,7 @@
       :placeholder="placeholder"
       :clear-button="clearButton"
       :disabled="disabled || null"
+      :aria-disabled="disabled || null"
       :required="required"
       :readonly="!typeable"
       autocomplete="off"

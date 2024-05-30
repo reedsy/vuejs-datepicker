@@ -20,6 +20,7 @@
         type="button"
         class="prev"
         :disabled="isLeftNavDisabled || null"
+        :aria-disabled="isLeftNavDisabled || null"
         :aria-label="isRtl ? 'Next Decade' : 'Previous Decade'"
         @click="isRtl ? nextDecade() : previousDecade()"
         @keydown.space.enter.prevent="isRtl ? nextDecade() : previousDecade()"
@@ -39,6 +40,7 @@
         class="next"
         :aria-label="isRtl ? 'Previous Decade' : 'Next Decade'"
         :disabled="isRightNavDisabled || null"
+        :aria-disabled="isRightNavDisabled || null"
         @click="isRtl ? previousDecade() : nextDecade()"
         @keydown="$emit('keydown', $event)"
       >
