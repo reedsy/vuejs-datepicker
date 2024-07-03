@@ -64,6 +64,22 @@ describe('Datepicker mounted', () => {
     expect(wrapper.vm.selectedDate.getTime()).toEqual(date.getTime());
   });
 
+  it('sets the focusedDate when setting the date', async () => {
+    const date = new Date(2016, 9, 9);
+    const wrapper = shallowMount(Datepicker, {
+      propsData: {
+        format: 'yyyy-MM-dd',
+      },
+    });
+    await wrapper.setData({
+      focusedDate: null,
+    });
+    expect(wrapper.vm.focusedDate).toBeNull();
+    const newDateTs = date.getTime();
+    wrapper.vm.setDate(newDateTs);
+    expect(wrapper.vm.focusedDate).toEqual(newDateTs);
+  });
+
   it('changes the page date when selecting a date from a different month', () => {
     const initialDate = new Date(Date.UTC(2016, 8, 9));
     const date = new Date(Date.UTC(2016, 9, 9));

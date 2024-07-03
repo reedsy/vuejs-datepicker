@@ -461,9 +461,12 @@ export default {
      */
     setDate (timestamp) {
       const date = new Date(timestamp);
+
       if (this.shouldChangePage(date)) {
         this.setPageDate(date);
       }
+
+      this.focusedDate = timestamp;
       this.selectedDate = date;
       this.$emit('selected', date);
       this.$emit('update:modelValue', date);
