@@ -28,16 +28,16 @@ describe('PickerDay: changing months', () => {
     expect(wrapper.emitted().changedMonth[0][0].getMonth()).toEqual(0);
   });
 
-  it('changes the focused to the next month', () => {
+  it('changes the focused date to the next month and resets the day', () => {
     wrapper.vm.nextMonth();
     expect(wrapper.emitted('update:focusedDate')).toBeTruthy();
-    expect(wrapper.emitted('update:focusedDate')[0]).toEqual([ new Date(2018, 2, 24).getTime() ]);
+    expect(wrapper.emitted('update:focusedDate')[0]).toEqual([ new Date(2018, 2, 1).getTime() ]);
   });
 
-  it('changes the focused to the next month', () => {
+  it('changes the focused date to the previous month and resets the day', () => {
     wrapper.vm.previousMonth();
     expect(wrapper.emitted('update:focusedDate')).toBeTruthy();
-    expect(wrapper.emitted('update:focusedDate')[0]).toEqual([ new Date(2018, 0, 24).getTime() ]);
+    expect(wrapper.emitted('update:focusedDate')[0]).toEqual([ new Date(2018, 0, 1).getTime() ]);
   });
 
   it('changes the month when the datepicker is side-by-side and the focus is on the first month', async () => {

@@ -461,9 +461,12 @@ export default {
      */
     setDate (timestamp) {
       const date = new Date(timestamp);
+
       if (this.shouldChangePage(date)) {
         this.setPageDate(date);
       }
+
+      this.focusedDate = timestamp;
       this.selectedDate = date;
       this.$emit('selected', date);
       this.$emit('update:modelValue', date);
@@ -545,11 +548,14 @@ export default {
         const parsed = new Date(date);
         date = isNaN(parsed.valueOf()) ? null : parsed;
       }
+
       if (!date) {
         this.setPageDate();
         this.selectedDate = null;
         return;
       }
+
+      this.focusedDate = date.getTime();
       this.selectedDate = date;
       this.setPageDate(date);
     },
