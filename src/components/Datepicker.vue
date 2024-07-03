@@ -548,11 +548,14 @@ export default {
         const parsed = new Date(date);
         date = isNaN(parsed.valueOf()) ? null : parsed;
       }
+
       if (!date) {
         this.setPageDate();
         this.selectedDate = null;
         return;
       }
+
+      this.focusedDate = date.getTime();
       this.selectedDate = date;
       this.setPageDate(date);
     },

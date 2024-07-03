@@ -53,6 +53,17 @@ describe('Datepicker mounted', () => {
     expect(pageDate.getDate()).toEqual(1);
   });
 
+  it('correctly sets the focusedDate when setting the value from method', async () => {
+    const newDate = new Date(2016, 9, 15);
+    const newDateTs = newDate.getTime();
+    await wrapper.setData({
+      focusedDate: null,
+    });
+    expect(wrapper.vm.focusedDate).toBeNull();
+    wrapper.vm.setValue(newDate);
+    expect(wrapper.vm.focusedDate).toEqual(newDateTs);
+  });
+
   it('sets the date', () => {
     const date = new Date(2016, 9, 9);
     const wrapper = shallowMount(Datepicker, {
@@ -66,6 +77,7 @@ describe('Datepicker mounted', () => {
 
   it('sets the focusedDate when setting the date', async () => {
     const date = new Date(2016, 9, 9);
+    const newDateTs = date.getTime();
     const wrapper = shallowMount(Datepicker, {
       propsData: {
         format: 'yyyy-MM-dd',
@@ -75,7 +87,6 @@ describe('Datepicker mounted', () => {
       focusedDate: null,
     });
     expect(wrapper.vm.focusedDate).toBeNull();
-    const newDateTs = date.getTime();
     wrapper.vm.setDate(newDateTs);
     expect(wrapper.vm.focusedDate).toEqual(newDateTs);
   });
