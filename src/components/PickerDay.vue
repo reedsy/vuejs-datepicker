@@ -337,6 +337,7 @@ export default {
       const monthsDifference = this.utils.getMonth(newDate)  - this.utils.getMonth(this.pageDate);
       const yearsDifference = this.utils.getFullYear(newDate) - this.utils.getFullYear(this.pageDate);
       const shouldChangePage = monthsDifference !== 0 && (config.forceMonthChange || !(this.sideBySide && monthsDifference === 1));
+
       if (shouldChangePage) {
         this.changeMonth(monthsDifference + yearsDifference * 12);
       }
@@ -393,6 +394,7 @@ export default {
     previousMonth () {
       if (!this.isPreviousMonthDisabled()) {
         const focusedDate = new Date(this.focusedDate);
+        focusedDate.setDate(1); // Ensure correct month changing
         this.utils.setMonth(focusedDate, this.utils.getMonth(focusedDate) - 1, this.useUtc);
         this.moveFocus(focusedDate, { focusCell: false, forceMonthChange: true });
       }
@@ -415,6 +417,7 @@ export default {
     nextMonth () {
       if (!this.isNextMonthDisabled()) {
         const focusedDate = new Date(this.focusedDate);
+        focusedDate.setDate(1); // Ensure correct month changing
         this.utils.setMonth(focusedDate, this.utils.getMonth(focusedDate) + 1, this.useUtc);
         this.moveFocus(focusedDate, { focusCell: false, forceMonthChange: true });
       }
