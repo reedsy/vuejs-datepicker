@@ -145,17 +145,8 @@ export default {
     },
     /**
      * Attempt to parse a typed date
-     * @param {Event} event
      */
-    parseTypedDate (event) {
-      // close calendar if escape or enter are pressed
-      if ([
-        27, // escape
-        13, // enter
-      ].includes(event.keyCode)) {
-        this.input.blur();
-      }
-
+    parseTypedDate () {
       if (this.typeable) {
         const typedDate = Date.parse(this.input.value);
         if (!isNaN(typedDate)) {
