@@ -168,6 +168,7 @@ import PickerYear from './PickerYear.vue';
 import utils, { makeDateUtils } from '../utils/DateUtils';
 import { ELEMENT_IDS } from '../config/ElementIds';
 import { getFocusableChildren } from '../utils/FocusableElements';
+import { isElementInViewport } from '../utils/IsElementInViewport';
 export default {
   name: 'DatePicker',
   components: {
@@ -603,6 +604,7 @@ export default {
         if (!input) return;
         const inputEl = input.$el.querySelector('input');
         if (!inputEl) return;
+        if (!isElementInViewport(inputEl)) return;
         inputEl.focus();
       }
 
