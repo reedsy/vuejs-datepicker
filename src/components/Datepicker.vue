@@ -168,7 +168,8 @@ import PickerYear from './PickerYear.vue';
 import utils, { makeDateUtils } from '../utils/DateUtils';
 import { ELEMENT_IDS } from '../config/ElementIds';
 import { getFocusableChildren } from '../utils/FocusableElements';
-import { isElementInViewport } from '../utils/IsElementInViewport';
+// TODO: reenable later if Chromium-based browsers issue is fixed
+// import { isElementInViewport } from '../utils/IsElementInViewport';
 export default {
   name: 'DatePicker',
   components: {
@@ -598,17 +599,21 @@ export default {
 
       if (this.isInline) return;
 
-      if (emitEvent) {
-        this.$emit('closed');
-        const input = this.$refs.input;
-        if (!input) return;
-        const inputEl = input.$el.querySelector('input');
-        if (!inputEl) return;
-        if (!isElementInViewport(inputEl)) return;
-        inputEl.focus();
-      }
-
       document.removeEventListener('click', this.clickOutside, false);
+
+      if (emitEvent) this.$emit('closed');
+
+      // This causes the current Chrome/Chromium-based browsers
+      // version to crash on macOS Sonoma
+      //
+      // TODO: reevaluate and test on newer versions
+      //
+      // const input = this.$refs.input;
+      // if (!input) return;
+      // const inputEl = input.$el.querySelector('input');
+      // if (!inputEl) return;
+      // if (!isElementInViewport(inputEl)) return;
+      // inputEl.focus();
     },
     /**
      * Initiate the component

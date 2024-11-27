@@ -424,53 +424,54 @@ describe('Focus after opening the datepicker', () => {
   });
 });
 
-describe('Focus after closing the datepicker', () => {
-  it('should focus on the input', async () => {
-    const wrapper = mount(Datepicker, { attachTo: document.body });
-    await wrapper.vm.showCalendar();
-    wrapper.vm.close(true);
-    const input = wrapper.vm.$refs.input.$el.querySelector('input');
-    expect(document.activeElement).toEqual(input);
-  });
-  describe('after scrolling and clicking outside', () => {
-    let wrapper;
-    let originalGetBoundingClientRect;
-    beforeEach(() => {
-      wrapper = mount(Datepicker, { attachTo: document.body });
-      originalGetBoundingClientRect = Element.prototype.getBoundingClientRect;
-    });
-    afterEach(() => {
-      Element.prototype.getBoundingClientRect = originalGetBoundingClientRect;
-      wrapper.unmount();
-    });
+// TODO: reenable later if Chromium-based browsers issue is fixed
+// describe('Focus after closing the datepicker', () => {
+//   it('should focus on the input', async () => {
+//     const wrapper = mount(Datepicker, { attachTo: document.body });
+//     await wrapper.vm.showCalendar();
+//     wrapper.vm.close(true);
+//     const input = wrapper.vm.$refs.input.$el.querySelector('input');
+//     expect(document.activeElement).toEqual(input);
+//   });
+//   describe('after scrolling and clicking outside', () => {
+//     let wrapper;
+//     let originalGetBoundingClientRect;
+//     beforeEach(() => {
+//       wrapper = mount(Datepicker, { attachTo: document.body });
+//       originalGetBoundingClientRect = Element.prototype.getBoundingClientRect;
+//     });
+//     afterEach(() => {
+//       Element.prototype.getBoundingClientRect = originalGetBoundingClientRect;
+//       wrapper.unmount();
+//     });
 
-    it('should focus on the input when it is in viewport', async () => {
-      Element.prototype.getBoundingClientRect = jest.fn(() => ({
-        top: 100,
-        bottom: 0,
-        left: 0,
-        right: 0,
-      }));
-      await wrapper.vm.showCalendar();
-      wrapper.vm.clickOutside({ target: document.body });
-      const input = wrapper.vm.$refs.input.$el.querySelector('input');
-      expect(document.activeElement).toEqual(input);
-    });
+//     it('should focus on the input when it is in viewport', async () => {
+//       Element.prototype.getBoundingClientRect = jest.fn(() => ({
+//         top: 100,
+//         bottom: 0,
+//         left: 0,
+//         right: 0,
+//       }));
+//       await wrapper.vm.showCalendar();
+//       wrapper.vm.clickOutside({ target: document.body });
+//       const input = wrapper.vm.$refs.input.$el.querySelector('input');
+//       expect(document.activeElement).toEqual(input);
+//     });
 
-    it('should not focus on the input when it is out of viewport', async () => {
-      Element.prototype.getBoundingClientRect = jest.fn(() => ({
-        top: -100,
-        bottom: 0,
-        left: 0,
-        right: 0,
-      }));
-      await wrapper.vm.showCalendar();
-      wrapper.vm.clickOutside({ target: document.body });
-      const input = wrapper.vm.$refs.input.$el.querySelector('input');
-      expect(document.activeElement).not.toEqual(input);
-    });
-  });
-});
+//     it('should not focus on the input when it is out of viewport', async () => {
+//       Element.prototype.getBoundingClientRect = jest.fn(() => ({
+//         top: -100,
+//         bottom: 0,
+//         left: 0,
+//         right: 0,
+//       }));
+//       await wrapper.vm.showCalendar();
+//       wrapper.vm.clickOutside({ target: document.body });
+//       const input = wrapper.vm.$refs.input.$el.querySelector('input');
+//       expect(document.activeElement).not.toEqual(input);
+//     });
+//   });
+// });
 
 describe('Modal', () => {
   it('closes the datepicker if clicked on overlay', async () => {
