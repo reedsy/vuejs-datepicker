@@ -159,6 +159,7 @@
     </picker-year>
   </div>
 </template>
+
 <script>
 import en from '../locale/translations/en';
 import DateInput from './DateInput.vue';
@@ -322,7 +323,10 @@ export default {
     },
     openDate () {
       this.setPageDate();
-      this.focusedDate = this.openDate.getTime();
+
+      this.focusedDate = this.openDate ?
+        this.openDate.getTime() :
+        new Date().getTime();
     },
     initialView () {
       this.setInitialView();
@@ -622,6 +626,7 @@ export default {
       if (this.modelValue) {
         this.setValue(this.modelValue);
       }
+
       if (this.isInline) {
         this.setInitialView();
       }

@@ -241,17 +241,40 @@ describe('Datepicker mounted', () => {
     expect(spy).toBeCalled();
   });
 
-  it('watches openDate', async () => {
-    const wrapper = shallowMount(Datepicker, {
-      propsData: {
-        openDate: new Date(2018, 0, 1),
-      },
+  describe('openDate watcher', () => {
+    it('should update the pageTimestamp and focusedDate', async () => {
+      const wrapper = shallowMount(Datepicker, {
+        propsData: {
+          openDate: new Date(2018, 0, 1),
+        },
+      });
+      expect(wrapper.vm.focusedDate).toEqual(new Date(2018, 0, 1).getTime());
+      expect(wrapper.vm.pageTimestamp).toEqual(new Date(2018, 0, 1).getTime());
+      const spy = jest.spyOn(wrapper.vm, 'setPageDate');
+      await wrapper.setProps({
+        openDate: new Date(2018, 3, 26),
+      });
+      expect(spy).toBeCalled();
+      expect(wrapper.vm.focusedDate).toEqual(new Date(2018, 3, 26).getTime());
+      expect(wrapper.vm.pageTimestamp).toEqual(new Date(2018, 3, 1).getTime());
     });
-    const spy = jest.spyOn(wrapper.vm, 'setPageDate');
-    await wrapper.setProps({
-      openDate: new Date(2018, 3, 26),
+
+    it('Should not crash when openDate is cleared', async () => {
+      const wrapper = shallowMount(Datepicker, {
+        propsData: {
+          openDate: new Date(2018, 0, 1),
+        },
+      });
+      expect(wrapper.vm.focusedDate).toEqual(new Date(2018, 0, 1).getTime());
+      expect(wrapper.vm.pageTimestamp).toEqual(new Date(2018, 0, 1).getTime());
+      const spy = jest.spyOn(wrapper.vm, 'setPageDate');
+      await wrapper.setProps({
+        openDate: null,
+      });
+      expect(spy).toBeCalled();
+      expect(wrapper.vm.focusedDate).not.toEqual(new Date(2018, 0, 1).getTime());
+      expect(wrapper.vm.pageTimestamp).not.toEqual(new Date(2018, 0, 1).getTime());
     });
-    expect(spy).toBeCalled();
   });
 
   it('watches initialView', async () => {
