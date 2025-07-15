@@ -521,12 +521,13 @@ export default {
      */
     selectMonth (month) {
       const date = new Date(month.timestamp);
+
+      this.selectDate(month);
+
       if (this.allowedToShowView('day')) {
         this.setPageDate(date);
         this.$emit('changedMonth', month);
         this.showDayCalendar();
-      } else {
-        this.selectDate(month);
       }
     },
     /**
