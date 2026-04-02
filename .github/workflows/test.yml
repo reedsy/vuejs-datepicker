@@ -27,7 +27,7 @@ jobs:
           scope: "@reedsy"
       - name: Install
         # Skip post-install to avoid malicious scripts stealing PAT
-        run: npm install --ignore-script
+        run: npm install --ignore-scripts
         env:
           # GITHUB_TOKEN can't access packages hosted in private repos,
           # even within the same organisation
