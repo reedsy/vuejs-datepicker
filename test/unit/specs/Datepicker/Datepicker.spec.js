@@ -1,6 +1,7 @@
 import Datepicker from '@/components/Datepicker.vue';
 import DateInput from '@/components/DateInput.vue';
 import { shallowMount, mount } from '@vue/test-utils';
+import { h } from 'vue';
 import { makeDateUtils } from '@/utils/DateUtils';
 import { en } from '@/locale';
 
@@ -511,3 +512,47 @@ describe('Modal', () => {
   });
 });
 
+describe('Calendar slots', () => {
+  it.each([ 'day', 'month', 'year' ])('renders content around the %s calendar', async (view) => {
+    const wrapper = mount(Datepicker, {
+      propsData: {
+        inline: true,
+        maximumView: view,
+        minimumView: view,
+      },
+      slots: {
+        afterCalendarContent: '<section class="after-calendar-content">After</section>',
+        beforeCalendarHeader: '<section class="before-calendar-header">Before</section>',
+      },
+    });
+    await wrapper.vm.$nextTick();
+
+    const calendar = wrapper.find('[role="dialog"]');
+    expect(calendar.element.firstElementChild.matches('.before-calendar-header')).toBe(true);
+    expect(calendar.find('.after-calendar-content').exists()).toBe(true);
+  });
+
+  it('forwards the scoped dayCell slot with its day metadata and date', async () => {
+    const wrapper = mount(Datepicker, {
+      propsData: {
+        inline: true,
+        maximumView: 'day',
+        minimumView: 'day',
+        openDate: new Date(2018, 1, 1),
+      },
+      slots: {
+        dayCell: ({ day, date }) => h(
+          'strong',
+          { class: 'custom-day' },
+          `${date.getFullYear()}-${date.getMonth() + 1}-${day.date}`,
+        ),
+      },
+    });
+    await wrapper.vm.$nextTick();
+
+    const customDays = wrapper.findAll('.custom-day');
+    expect(customDays).toHaveLength(28);
+    expect(customDays[0].text()).toEqual('2018-2-1');
+    expect(customDays[27].text()).toEqual('2018-2-28');
+  });
+});

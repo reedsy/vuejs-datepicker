@@ -1,8 +1,11 @@
-const path = require('path');
-const { defineConfig } = require('vite');
-const vue = require('@vitejs/plugin-vue');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
-module.exports = defineConfig({
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -17,7 +20,7 @@ module.exports = defineConfig({
       filename: (format) => `vuejs-datepicker.${format}.js`,
       formats: [ 'umd', 'cjs', 'es' ],
     },
-    rollupOptions: {
+    rolldownOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: [ 'vue' ],

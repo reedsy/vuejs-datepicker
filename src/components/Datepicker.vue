@@ -93,6 +93,16 @@
           :on-tab="(event) => focusNextElement(event)"
         />
       </template>
+      <template
+        v-if="$slots.dayCell"
+        #dayCell="{ day, date }"
+      >
+        <slot
+          name="dayCell"
+          :day="day"
+          :date="date"
+        />
+      </template>
     </picker-day>
 
     <!-- Month View -->

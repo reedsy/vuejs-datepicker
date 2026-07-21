@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/no-v-html -->
 <template>
   <div
     aria-labelledby="month-button"
@@ -23,6 +22,7 @@
       :class="dayClasses(day)"
       :role="day.isDisabled ? null : 'button'"
       :tabindex="isFocused(day) ? 0 : -1"
+      v-bind="$slots.dayCell ? {} : { innerHTML: dayCellContent(day) }"
       @mouseover="mouseOver(day)"
       @focus="mouseOver(day)"
       @keydown.left.prevent="$emit('focus-previous-day')"
@@ -32,8 +32,14 @@
       @keydown.space.enter.prevent="selectDate(day)"
       @keydown="$emit('keydown', $event)"
       @click="selectDate(day)"
-      v-html="dayCellContent(day)"
-    />
+    >
+      <slot
+        v-if="$slots.dayCell"
+        name="dayCell"
+        :day="day"
+        :date="new Date(day.timestamp)"
+      />
+    </span>
   </div>
 </template>
 

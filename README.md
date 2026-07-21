@@ -283,7 +283,21 @@ var state = {
 ```
 ## Slots
 
-Slots will help you customize content.  .
+Slots will help you customize content.
+
+#### dayCell
+
+Use the scoped `dayCell` slot to replace the content of each day cell with Vue-rendered content. The slot receives the complete `day` metadata object, including its selected, disabled, highlighted, and today flags, plus `date`, a `Date` instance for the cell that provides its day, month, and year. When the slot is omitted, cells continue to use the `dayCellContent` prop and default to the day number.
+
+``` html
+<datepicker>
+  <template #dayCell="{ day, date }">
+    <span>{{ day.date }}</span>
+    <span>{{ date.getMonth() + 1 }}/{{ date.getFullYear() }}</span>
+    <span v-if="day.isToday">Today</span>
+  </template>
+</datepicker>
+```
 
 #### beforeCalendarHeader
 
@@ -293,9 +307,21 @@ An example would be to use bootstrap's `input-group-prepend` and `input-group-ap
 to show some custom text:
 ``` html
 <datepicker :bootstrap-styling="true">
-  <div slot="beforeCalendarHeader" class="calender-header">
-    Choose a Date
-  </div>
+  <template #beforeCalendarHeader>
+    <div class="calendar-header">Choose a Date</div>
+  </template>
+</datepicker>
+```
+
+#### afterCalendarContent
+
+Use `afterCalendarContent` to add content after the calendar cells. The slot is empty by default and is available in the day, month, and year views.
+
+``` html
+<datepicker>
+  <template #afterCalendarContent>
+    <p>All dates are shown in your local timezone.</p>
+  </template>
 </datepicker>
 ```
 
