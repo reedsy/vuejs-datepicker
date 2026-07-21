@@ -81,6 +81,9 @@
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
+      <template #beforeCalendar>
+        <slot name="beforeCalendar" />
+      </template>
       <template #beforeCalendarHeader>
         <slot name="beforeCalendarHeader" />
       </template>
@@ -92,6 +95,19 @@
           name="footer"
           :on-tab="(event) => focusNextElement(event)"
         />
+      </template>
+      <template
+        v-if="$slots.dayCell"
+        #dayCell="{ day, date }"
+      >
+        <slot
+          name="dayCell"
+          :day="day"
+          :date="date"
+        />
+      </template>
+      <template #afterCalendar>
+        <slot name="afterCalendar" />
       </template>
     </picker-day>
 
@@ -119,11 +135,17 @@
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
+      <template #beforeCalendar>
+        <slot name="beforeCalendar" />
+      </template>
       <template #beforeCalendarHeader>
         <slot name="beforeCalendarHeader" />
       </template>
       <template #afterCalendarContent>
         <slot name="afterCalendarContent" />
+      </template>
+      <template #afterCalendar>
+        <slot name="afterCalendar" />
       </template>
     </picker-month>
 
@@ -150,11 +172,17 @@
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
+      <template #beforeCalendar>
+        <slot name="beforeCalendar" />
+      </template>
       <template #beforeCalendarHeader>
         <slot name="beforeCalendarHeader" />
       </template>
       <template #afterCalendarContent>
         <slot name="afterCalendarContent" />
+      </template>
+      <template #afterCalendar>
+        <slot name="afterCalendar" />
       </template>
     </picker-year>
   </div>

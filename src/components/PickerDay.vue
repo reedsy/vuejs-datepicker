@@ -14,6 +14,7 @@
     aria-label="Choose Date"
     @mousedown.prevent
   >
+    <slot name="beforeCalendar" />
     <slot name="beforeCalendarHeader" />
     <header>
       <button
@@ -84,7 +85,18 @@
         @focus-previous-week="focusPreviousWeek"
         @mouseover="highlightOnMouseover"
         @keydown="$emit('keydown', $event)"
-      />
+      >
+        <template
+          v-if="$slots.dayCell"
+          #dayCell="{ day, date }"
+        >
+          <slot
+            name="dayCell"
+            :day="day"
+            :date="date"
+          />
+        </template>
+      </DaysGrid>
       <DaysGrid
         v-if="sideBySide"
         data-test-id="second-grid"
@@ -104,7 +116,18 @@
         @focus-previous-week="focusPreviousWeek"
         @mouseover="highlightOnMouseover"
         @keydown="$emit('keydown', $event)"
-      />
+      >
+        <template
+          v-if="$slots.dayCell"
+          #dayCell="{ day, date }"
+        >
+          <slot
+            name="dayCell"
+            :day="day"
+            :date="date"
+          />
+        </template>
+      </DaysGrid>
     </div>
     <div>
       <slot name="afterCalendarContent" />
@@ -121,6 +144,7 @@
         />
       </slot>
     </div>
+    <slot name="afterCalendar" />
   </div>
 </template>
 <script>

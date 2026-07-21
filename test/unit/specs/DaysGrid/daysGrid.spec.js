@@ -1,5 +1,6 @@
 import DaysGrid from '@/components/DaysGrid.vue';
-import { mount, shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
+import { h } from 'vue';
 import { en } from '@/locale';
 import { makeDateUtils } from '@/utils/DateUtils';
 
@@ -112,6 +113,42 @@ describe('DaysGrid: DOM', () => {
     days.forEach((day, index) => {
       expect(dayHeaders[index].text()).toEqual(day);
     });
+  });
+
+  it('uses the dayCellContent prop when no dayCell slot is provided', async () => {
+    await wrapper.setProps({
+      dayCellContent: day => `<strong>${day.date}</strong>`,
+    });
+
+    const firstDayCell = wrapper.find('.cell.day:not(.blank)');
+    expect(firstDayCell.find('strong').text()).toEqual('1');
+  });
+
+  it('renders the dayCell slot with the day object and cell date', () => {
+    const dayCellContent = jest.fn();
+    wrapper = mount(DaysGrid, {
+      propsData: {
+        dayCellContent,
+        days,
+        mondayFirst: false,
+        startDate: new Date(Date.UTC(2018, 1, 1)),
+        translation: en,
+        useUtc: true,
+        utils: constructedDateUtils,
+      },
+      slots: {
+        dayCell: ({ day, date }) => h(
+          'strong',
+          { class: 'custom-day' },
+          `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${day.date}`,
+        ),
+      },
+    });
+
+    const customDays = wrapper.findAll('.custom-day');
+    expect(customDays).toHaveLength(2);
+    expect(customDays[0].text()).toEqual('2021-10-1');
+    expect(dayCellContent).not.toHaveBeenCalled();
   });
 });
 
