@@ -17,7 +17,8 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src', 'components', 'Datepicker.vue'),
       name: 'vuejsDatepicker',
-      filename: (format) => `vuejs-datepicker.${format}.js`,
+      fileName: (format) => `vuejs-datepicker.${format}.js`,
+      cssFileName: 'style',
       formats: [ 'umd', 'cjs', 'es' ],
     },
     rolldownOptions: {
