@@ -513,7 +513,7 @@ describe('Modal', () => {
 });
 
 describe('Calendar slots', () => {
-  it.each([ 'day', 'month', 'year' ])('renders sections before and after the %s calendar', async (view) => {
+  it.each([ 'day', 'month', 'year' ])('renders content around the %s calendar', async (view) => {
     const wrapper = mount(Datepicker, {
       propsData: {
         inline: true,
@@ -521,15 +521,15 @@ describe('Calendar slots', () => {
         minimumView: view,
       },
       slots: {
-        afterCalendar: '<section class="after-calendar">After</section>',
-        beforeCalendar: '<section class="before-calendar">Before</section>',
+        afterCalendarContent: '<section class="after-calendar-content">After</section>',
+        beforeCalendarHeader: '<section class="before-calendar-header">Before</section>',
       },
     });
     await wrapper.vm.$nextTick();
 
     const calendar = wrapper.find('[role="dialog"]');
-    expect(calendar.element.firstElementChild.matches('.before-calendar')).toBe(true);
-    expect(calendar.element.lastElementChild.matches('.after-calendar')).toBe(true);
+    expect(calendar.element.firstElementChild.matches('.before-calendar-header')).toBe(true);
+    expect(calendar.find('.after-calendar-content').exists()).toBe(true);
   });
 
   it('forwards the scoped dayCell slot with its day metadata and date', async () => {

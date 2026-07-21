@@ -14,7 +14,6 @@
     :style="calendarStyle"
     @mousedown.prevent
   >
-    <slot name="beforeCalendar" />
     <slot name="beforeCalendarHeader" />
     <header>
       <button
@@ -73,7 +72,6 @@
     <div>
       <slot name="afterCalendarContent" />
     </div>
-    <slot name="afterCalendar" />
   </div>
 </template>
 <script>

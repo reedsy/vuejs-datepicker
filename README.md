@@ -299,21 +299,6 @@ Use the scoped `dayCell` slot to replace the content of each day cell with Vue-r
 </datepicker>
 ```
 
-#### beforeCalendar and afterCalendar
-
-Use `beforeCalendar` and `afterCalendar` to add sections at the beginning and end of the active calendar view. Both slots are empty by default and are available in the day, month, and year views.
-
-``` html
-<datepicker>
-  <template #beforeCalendar>
-    <p>Choose a date</p>
-  </template>
-  <template #afterCalendar>
-    <p>All dates are shown in your local timezone.</p>
-  </template>
-</datepicker>
-```
-
 #### beforeCalendarHeader
 
 Sometimes you need to show custom content before the calendar header. For such cases you can use the named slot `beforeCalendarHeader`.
@@ -322,9 +307,21 @@ An example would be to use bootstrap's `input-group-prepend` and `input-group-ap
 to show some custom text:
 ``` html
 <datepicker :bootstrap-styling="true">
-  <div slot="beforeCalendarHeader" class="calender-header">
-    Choose a Date
-  </div>
+  <template #beforeCalendarHeader>
+    <div class="calendar-header">Choose a Date</div>
+  </template>
+</datepicker>
+```
+
+#### afterCalendarContent
+
+Use `afterCalendarContent` to add content after the calendar cells. The slot is empty by default and is available in the day, month, and year views.
+
+``` html
+<datepicker>
+  <template #afterCalendarContent>
+    <p>All dates are shown in your local timezone.</p>
+  </template>
 </datepicker>
 ```
 

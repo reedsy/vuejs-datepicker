@@ -81,9 +81,6 @@
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
-      <template #beforeCalendar>
-        <slot name="beforeCalendar" />
-      </template>
       <template #beforeCalendarHeader>
         <slot name="beforeCalendarHeader" />
       </template>
@@ -105,9 +102,6 @@
           :day="day"
           :date="date"
         />
-      </template>
-      <template #afterCalendar>
-        <slot name="afterCalendar" />
       </template>
     </picker-day>
 
@@ -135,17 +129,11 @@
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
-      <template #beforeCalendar>
-        <slot name="beforeCalendar" />
-      </template>
       <template #beforeCalendarHeader>
         <slot name="beforeCalendarHeader" />
       </template>
       <template #afterCalendarContent>
         <slot name="afterCalendarContent" />
-      </template>
-      <template #afterCalendar>
-        <slot name="afterCalendar" />
       </template>
     </picker-month>
 
@@ -172,17 +160,11 @@
       @keydown.esc.prevent="close(true)"
       @keydown.tab="focusNextElement($event)"
     >
-      <template #beforeCalendar>
-        <slot name="beforeCalendar" />
-      </template>
       <template #beforeCalendarHeader>
         <slot name="beforeCalendarHeader" />
       </template>
       <template #afterCalendarContent>
         <slot name="afterCalendarContent" />
-      </template>
-      <template #afterCalendar>
-        <slot name="afterCalendar" />
       </template>
     </picker-year>
   </div>

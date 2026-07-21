@@ -14,7 +14,6 @@
     aria-label="Choose Date"
     @mousedown.prevent
   >
-    <slot name="beforeCalendar" />
     <slot name="beforeCalendarHeader" />
     <header>
       <button
@@ -144,7 +143,6 @@
         />
       </slot>
     </div>
-    <slot name="afterCalendar" />
   </div>
 </template>
 <script>
