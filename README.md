@@ -283,7 +283,7 @@ var state = {
 ```
 ## Slots
 
-Slots will help you customize content.  .
+Slots will help you customize content.
 
 #### dayCell
 
