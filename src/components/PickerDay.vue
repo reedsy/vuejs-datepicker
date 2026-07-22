@@ -87,12 +87,14 @@
       >
         <template
           v-if="$slots.dayCell"
-          #dayCell="{ day, date }"
+          #dayCell="{ day, date, isDisabled, isSelected }"
         >
           <slot
             name="dayCell"
             :day="day"
             :date="date"
+            :is-disabled="isDisabled"
+            :is-selected="isSelected"
           />
         </template>
       </DaysGrid>
@@ -118,12 +120,14 @@
       >
         <template
           v-if="$slots.dayCell"
-          #dayCell="{ day, date }"
+          #dayCell="{ day, date, isDisabled, isSelected }"
         >
           <slot
             name="dayCell"
             :day="day"
             :date="date"
+            :is-disabled="isDisabled"
+            :is-selected="isSelected"
           />
         </template>
       </DaysGrid>
