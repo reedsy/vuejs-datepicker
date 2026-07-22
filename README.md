@@ -287,12 +287,12 @@ Slots will help you customize content.
 
 #### dayCell
 
-Use the scoped `dayCell` slot to replace the content of each day cell with Vue-rendered content. The slot receives the complete `day` metadata object, including its selected, disabled, highlighted, and today flags, plus `date`, a `Date` instance for the cell that provides its day, month, and year. When the slot is omitted, cells continue to use the `dayCellContent` prop and default to the day number.
+Use the scoped `dayCell` slot to replace the content of each day cell with Vue-rendered content. The slot receives the complete `day` metadata object, including its selected, disabled, highlighted, and today flags, plus `date`, a `Date` instance for the cell that provides its day, month, and year. The `isDisabled` and `isSelected` booleans are also available as direct slot props. When the slot is omitted, cells continue to use the `dayCellContent` prop and default to the day number.
 
 ``` html
 <datepicker>
-  <template #dayCell="{ day, date }">
-    <span>{{ day.date }}</span>
+  <template #dayCell="{ day, date, isDisabled, isSelected }">
+    <span :class="{ disabled: isDisabled, selected: isSelected }">{{ day.date }}</span>
     <span>{{ date.getMonth() + 1 }}/{{ date.getFullYear() }}</span>
     <span v-if="day.isToday">Today</span>
   </template>

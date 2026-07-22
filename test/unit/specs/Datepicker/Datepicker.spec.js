@@ -532,19 +532,21 @@ describe('Calendar slots', () => {
     expect(calendar.find('.after-calendar-content').exists()).toBe(true);
   });
 
-  it('forwards the scoped dayCell slot with its day metadata and date', async () => {
+  it('forwards the scoped dayCell slot with its day metadata, date, and state', async () => {
     const wrapper = mount(Datepicker, {
       propsData: {
+        disabledDates: { dates: [ new Date(2018, 1, 1) ] },
         inline: true,
         maximumView: 'day',
         minimumView: 'day',
+        modelValue: new Date(2018, 1, 28),
         openDate: new Date(2018, 1, 1),
       },
       slots: {
-        dayCell: ({ day, date }) => h(
+        dayCell: ({ day, date, isDisabled, isSelected }) => h(
           'strong',
           { class: 'custom-day' },
-          `${date.getFullYear()}-${date.getMonth() + 1}-${day.date}`,
+          `${date.getFullYear()}-${date.getMonth() + 1}-${day.date}-${isDisabled}-${isSelected}`,
         ),
       },
     });
@@ -552,7 +554,7 @@ describe('Calendar slots', () => {
 
     const customDays = wrapper.findAll('.custom-day');
     expect(customDays).toHaveLength(28);
-    expect(customDays[0].text()).toEqual('2018-2-1');
-    expect(customDays[27].text()).toEqual('2018-2-28');
+    expect(customDays[0].text()).toEqual('2018-2-1-true-false');
+    expect(customDays[27].text()).toEqual('2018-2-28-false-true');
   });
 });

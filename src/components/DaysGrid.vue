@@ -38,6 +38,8 @@
         name="dayCell"
         :day="day"
         :date="new Date(day.timestamp)"
+        :is-disabled="day.isDisabled"
+        :is-selected="day.isSelected"
       />
     </span>
   </div>

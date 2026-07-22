@@ -6,8 +6,8 @@ import { makeDateUtils } from '@/utils/DateUtils';
 
 const constructedDateUtils = makeDateUtils(true);
 const days = [
-  getDateObject(2021, 9, 1),
-  getDateObject(2021, 9, 2),
+  { ...getDateObject(2021, 9, 1), isDisabled: true, isSelected: false },
+  { ...getDateObject(2021, 9, 2), isDisabled: false, isSelected: true },
 ];
 
 describe('DaysGrid: DOM', () => {
@@ -124,7 +124,7 @@ describe('DaysGrid: DOM', () => {
     expect(firstDayCell.find('strong').text()).toEqual('1');
   });
 
-  it('renders the dayCell slot with the day object and cell date', () => {
+  it('renders the dayCell slot with the day object, cell date, and state', () => {
     const dayCellContent = jest.fn();
     wrapper = mount(DaysGrid, {
       propsData: {
@@ -137,17 +137,18 @@ describe('DaysGrid: DOM', () => {
         utils: constructedDateUtils,
       },
       slots: {
-        dayCell: ({ day, date }) => h(
+        dayCell: ({ day, date, isDisabled, isSelected }) => h(
           'strong',
           { class: 'custom-day' },
-          `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${day.date}`,
+          `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${day.date}-${isDisabled}-${isSelected}`,
         ),
       },
     });
 
     const customDays = wrapper.findAll('.custom-day');
     expect(customDays).toHaveLength(2);
-    expect(customDays[0].text()).toEqual('2021-10-1');
+    expect(customDays[0].text()).toEqual('2021-10-1-true-false');
+    expect(customDays[1].text()).toEqual('2021-10-2-false-true');
     expect(dayCellContent).not.toHaveBeenCalled();
   });
 });
