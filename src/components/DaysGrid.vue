@@ -14,11 +14,24 @@
         class="cell day blank"
       />
     </template>
+    <!--
+      The two branches below are deliberately kept separate: a single element
+      cannot carry both `v-html` and (conditional) children without Vue warning
+      that the `innerHTML` prop overrides its children.
+    -->
     <template v-if="$slots.dayCell">
       <span
         v-for="day in days"
         :key="day.timestamp"
-        v-bind="cellProps(day)"
+        :aria-selected="day.isSelected"
+        class="cell day"
+        :class="dayClasses(day)"
+        :role="day.isDisabled ? null : 'button'"
+        :tabindex="isFocused(day) ? 0 : -1"
+        @mouseover="mouseOver(day)"
+        @focus="mouseOver(day)"
+        @keydown="onKeydown(day, $event)"
+        @click="selectDate(day)"
       >
         <slot
           name="dayCell"
@@ -33,7 +46,15 @@
       <span
         v-for="day in days"
         :key="day.timestamp"
-        v-bind="cellProps(day)"
+        :aria-selected="day.isSelected"
+        class="cell day"
+        :class="dayClasses(day)"
+        :role="day.isDisabled ? null : 'button'"
+        :tabindex="isFocused(day) ? 0 : -1"
+        @mouseover="mouseOver(day)"
+        @focus="mouseOver(day)"
+        @keydown="onKeydown(day, $event)"
+        @click="selectDate(day)"
         v-html="dayCellContent(day)"
       />
     </template>
@@ -97,43 +118,32 @@ export default {
     },
   },
   methods: {
-    cellProps (day) {
-      return {
-        'aria-selected': day.isSelected,
-        class: [ 'cell', 'day', this.dayClasses(day) ],
-        role: day.isDisabled ? null : 'button',
-        tabindex: this.isFocused(day) ? 0 : -1,
-        onMouseover: () => this.mouseOver(day),
-        onFocus: () => this.mouseOver(day),
-        onKeydown: (event) => {
-          switch (event.key) {
-          case 'ArrowLeft':
-            event.preventDefault();
-            this.$emit('focus-previous-day');
-            break;
-          case 'ArrowRight':
-            event.preventDefault();
-            this.$emit('focus-next-day');
-            break;
-          case 'ArrowUp':
-            event.preventDefault();
-            this.$emit('focus-previous-week');
-            break;
-          case 'ArrowDown':
-            event.preventDefault();
-            this.$emit('focus-next-week');
-            break;
-          case ' ':
-          case 'Spacebar':
-          case 'Enter':
-            event.preventDefault();
-            this.selectDate(day);
-            break;
-          }
-          this.$emit('keydown', event);
-        },
-        onClick: () => this.selectDate(day),
-      };
+    onKeydown (day, event) {
+      switch (event.key) {
+      case 'ArrowLeft':
+        event.preventDefault();
+        this.$emit('focus-previous-day');
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        this.$emit('focus-next-day');
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        this.$emit('focus-previous-week');
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        this.$emit('focus-next-week');
+        break;
+      case ' ':
+      case 'Spacebar':
+      case 'Enter':
+        event.preventDefault();
+        this.selectDate(day);
+        break;
+      }
+      this.$emit('keydown', event);
     },
     dayClasses (day) {
       return {
