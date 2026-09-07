@@ -151,6 +151,55 @@ describe('DaysGrid: DOM', () => {
     expect(customDays[1].text()).toEqual('2021-10-2-false-true');
     expect(dayCellContent).not.toHaveBeenCalled();
   });
+
+  it('renders day content and emits no Vue warning when no dayCell slot is provided', async () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    wrapper = mount(DaysGrid, {
+      propsData: {
+        days,
+        mondayFirst: false,
+        startDate: new Date(Date.UTC(2018, 1, 1)),
+        translation: en,
+        useUtc: true,
+        utils: constructedDateUtils,
+      },
+    });
+    await wrapper.vm.$nextTick();
+
+    const dayCells = wrapper.findAll('.cell.day:not(.blank)');
+    expect(dayCells).toHaveLength(2);
+    expect(dayCells[0].text()).toEqual('1');
+    expect(dayCells[1].text()).toEqual('2');
+    expect(warnSpy).not.toHaveBeenCalled();
+
+    warnSpy.mockRestore();
+  });
+
+  it('renders the dayCell slot and emits no Vue warning when it is provided', async () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    wrapper = mount(DaysGrid, {
+      propsData: {
+        days,
+        mondayFirst: false,
+        startDate: new Date(Date.UTC(2018, 1, 1)),
+        translation: en,
+        useUtc: true,
+        utils: constructedDateUtils,
+      },
+      slots: {
+        dayCell: ({ day }) => h('strong', { class: 'custom-day' }, day.date),
+      },
+    });
+    await wrapper.vm.$nextTick();
+
+    const customDays = wrapper.findAll('.custom-day');
+    expect(customDays).toHaveLength(2);
+    expect(warnSpy).not.toHaveBeenCalled();
+
+    warnSpy.mockRestore();
+  });
 });
 
 function getDateObject (year, month, day) {

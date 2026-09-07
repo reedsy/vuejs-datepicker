@@ -14,34 +14,29 @@
         class="cell day blank"
       />
     </template>
-    <span
-      v-for="day in days"
-      :key="day.timestamp"
-      :aria-selected="day.isSelected"
-      class="cell day"
-      :class="dayClasses(day)"
-      :role="day.isDisabled ? null : 'button'"
-      :tabindex="isFocused(day) ? 0 : -1"
-      v-bind="$slots.dayCell ? {} : { innerHTML: dayCellContent(day) }"
-      @mouseover="mouseOver(day)"
-      @focus="mouseOver(day)"
-      @keydown.left.prevent="$emit('focus-previous-day')"
-      @keydown.right.prevent="$emit('focus-next-day')"
-      @keydown.up.prevent="$emit('focus-previous-week')"
-      @keydown.down.prevent="$emit('focus-next-week')"
-      @keydown.space.enter.prevent="selectDate(day)"
-      @keydown="$emit('keydown', $event)"
-      @click="selectDate(day)"
-    >
-      <slot
-        v-if="$slots.dayCell"
-        name="dayCell"
-        :day="day"
-        :date="new Date(day.timestamp)"
-        :is-disabled="day.isDisabled"
-        :is-selected="day.isSelected"
+    <template v-if="$slots.dayCell">
+      <span
+        v-for="day in days"
+        :key="day.timestamp"
+        v-bind="cellProps(day)"
+      >
+        <slot
+          name="dayCell"
+          :day="day"
+          :date="new Date(day.timestamp)"
+          :is-disabled="day.isDisabled"
+          :is-selected="day.isSelected"
+        />
+      </span>
+    </template>
+    <template v-else>
+      <span
+        v-for="day in days"
+        :key="day.timestamp"
+        v-bind="cellProps(day)"
+        v-html="dayCellContent(day)"
       />
-    </span>
+    </template>
   </div>
 </template>
 
@@ -102,6 +97,44 @@ export default {
     },
   },
   methods: {
+    cellProps (day) {
+      return {
+        'aria-selected': day.isSelected,
+        class: [ 'cell', 'day', this.dayClasses(day) ],
+        role: day.isDisabled ? null : 'button',
+        tabindex: this.isFocused(day) ? 0 : -1,
+        onMouseover: () => this.mouseOver(day),
+        onFocus: () => this.mouseOver(day),
+        onKeydown: (event) => {
+          switch (event.key) {
+          case 'ArrowLeft':
+            event.preventDefault();
+            this.$emit('focus-previous-day');
+            break;
+          case 'ArrowRight':
+            event.preventDefault();
+            this.$emit('focus-next-day');
+            break;
+          case 'ArrowUp':
+            event.preventDefault();
+            this.$emit('focus-previous-week');
+            break;
+          case 'ArrowDown':
+            event.preventDefault();
+            this.$emit('focus-next-week');
+            break;
+          case ' ':
+          case 'Spacebar':
+          case 'Enter':
+            event.preventDefault();
+            this.selectDate(day);
+            break;
+          }
+          this.$emit('keydown', event);
+        },
+        onClick: () => this.selectDate(day),
+      };
+    },
     dayClasses (day) {
       return {
         selected: day.isSelected,
