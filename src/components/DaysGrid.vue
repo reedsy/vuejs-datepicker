@@ -137,6 +137,7 @@ export default {
         this.$emit('focus-next-week');
         break;
       case ' ':
+      case 'Space':
       case 'Spacebar':
       case 'Enter':
         event.preventDefault();
